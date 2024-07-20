@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Crypto Dashboard for Keanu Reeves</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        /* (Previous CSS styles remain the same) */
+        
+        .widget {
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        .draggable {
+            cursor: move;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #2a1152;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 15px;
+            color: #fff;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        #alertPrice {
+            width: 100%;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        
+        #setAlertBtn {
+            margin-top: 10px;
+            background-color: #ffa500;
+            border: none;
+            color: #1a0933;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget" id="dashboard">
+        <div class="bg-animation"></div>
+        <div class="dots" id="dots"></div>
+        
+        <div class="draggable">
+            <div class="header">
+                <div class="coin-info">
+                    <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="BNB" class="coin-icon">
+                    <span class="coin-name">Binance Coin (BNB)</span>
+                </div>
+                <div>
+                    <div class="coin-price">$567.04</div>
+                    <div class="change">-0.11%</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="draggable">
+            <div class="card">
+                <div class="card-title">Account Holder</div>
+                <div class="card-value">Keanu Reeves</div>
+            </div>
+        </div>
+        
+        <div class="draggable">
+            <div class="card">
+                <div class="card-title">Account Balance</div>
+                <div class="card-value">$630,000,000.00</div>
+            </div>
+        </div>
+        
+        <div class="draggable">
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="draggable">
+            <div class="portfolio-breakdown">
+                <div class="portfolio-item">
+                    <div class="portfolio-value">60%</div>
+                    <div class="portfolio-name">BNB</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-value">30%</div>
+                    <div class="portfolio-name">BTC</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-value">10%</div>
+                    <div class="portfolio-name">ETH</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="draggable">
+            <div class="news-feed" id="newsFeed">
+                <!-- News items will be dynamically added here -->
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn" id="quickBuyBtn">Quick Buy</button>
+            <button class="btn" id="setPriceAlertBtn">Set Price Alert</button>
+        </div>
+    </div>
+
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Set Price Alert</h2>
+            <p>Enter the price at which you want to be alerted:</p>
+            <input type="number" id="alertPrice" placeholder="Enter price">
+            <button id="setAlertBtn">Set Alert</button>
+        </div>
+    </div>
+
+    <script>
+        // (Previous JavaScript remains the same)
+
+        // Make dashboard items draggable
+        new Sortable(document.getElementById('dashboard'), {
+            animation: 150,
+            ghostClass: 'blue-background-class'
+        });
+
+        // Price alert modal
+        const modal = document.getElementById("alertModal");
+        const btn = document.getElementById("setPriceAlertBtn");
+        const span = document.getElementsByClassName("close")[0];
+        const setAlertBtn = document.getElementById("setAlertBtn");
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        setAlertBtn.onclick = function() {
+            const alertPrice = document.getElementById("alertPrice").value;
+            alert(`Price alert set for $${alertPrice}`);
+            modal.style.display = "none";
+        }
+
+        // Quick Buy functionality (mock)
+        document.getElementById("quickBuyBtn").addEventListener("click", function() {
+            alert("Quick Buy feature - Implement actual trading logic here");
+        });
+
+        // Simulated real-time updates for account balance
+        function updateBalance() {
+            const balanceElement = document.querySelector('.card-value');
+            const currentBalance = parseFloat(balanceElement.textContent.replace(/[^0-9.-]+/g,""));
+            const newBalance = currentBalance + (Math.random() - 0.5) * 1000000;
+            balanceElement.textContent = `$${newBalance.toFixed(2)}`;
+        }
+
+        setInterval(updateBalance, 10000);
+    </script>
+</body>
+          </html>
